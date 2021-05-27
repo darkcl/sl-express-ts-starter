@@ -1,11 +1,7 @@
-version: '3'
+version: "3"
 
 services:
-    test-app:
-        build: .
-        ports:
-            - '3000:3000'
-        volumes:
-            - .:/app
-            - /app/node_modules
-        command: bash -c "nodemon server.js"
+  app:
+    build: .
+    ports:
+      - "3000:3000"

@@ -1,17 +1,23 @@
-FROM node:10.15.3
+FROM node:14 as builder
 
-ENV APP_DIR=/app
+WORKDIR /build
 
-COPY package.json $APP_DIR/package.json
+COPY package.json package.json
+COPY yarn.lock yarn.lock
+COPY tsconfig.json tsconfig.json
 
-RUN cd $APP_DIR \
-    && npm i \
-    && npm i -g nodemon
+RUN yarn install --production false
 
-COPY . $APP_DIR
+COPY . .
+RUN ls
+RUN yarn build
 
-WORKDIR $APP_DIR
+FROM node:14-alpine
 
-EXPOSE 3000
+COPY --from=builder /build/package.json package.json
+COPY --from=builder /build/yarn.lock yarn.lock
 
-CMD ["nodemon", "server.js"]
+RUN yarn install --production true
+COPY --from=builder /build/dist/ .
+
+CMD [ "node", "server.js" ]
