@@ -7,7 +7,7 @@
   "scripts": {
     "build": "tsc",
     "watch": "tsc --watch",
-    "serve": "nodemon server.js"
+    "serve": "cd dist/ && nodemon server.js"
   },
   "dependencies": {
     "@shopline/sl-express": "^2.1.3"
