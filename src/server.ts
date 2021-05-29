@@ -1,3 +1,5 @@
+import 'module-alias/register';
+
 const app = require('./app.js');
 
 const errorHandler = function (err) {

@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
-import { Controller, Get, Inject } from '../../decorators';
-import { PostService } from '../services';
+import { Controller, Get, Inject } from '@/decorators';
+import { PostService } from '@/api/services';
 
 @Controller('posts')
 class PostsController {

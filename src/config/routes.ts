@@ -1,4 +1,4 @@
-import { generateRoutes } from '../decorators';
+import { generateRoutes } from '@/decorators';
 
 module.exports = {
   preMiddlewares: ['* requestLog requestParseURLEncoded requestParseBody'],

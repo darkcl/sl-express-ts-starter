@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { Controller, Get } from '../../decorators';
+import { Controller, Get } from '@/decorators';
 
 @Controller('')
 class PublicController {
