@@ -11,13 +11,14 @@ export const Controller = (path = '') => {
 };
 
 const createMethodDecorator = (method: HttpMethod = 'get') => {
-  return (path = '/'): MethodDecorator =>
+  return (path = '/', middlewares: string[] = []): MethodDecorator =>
     (target: object, name: string, descriptor: any) => {
       routeList.push({
         type: method,
         target: target.constructor.name,
         name,
         path,
+        middlewares,
       });
     };
 };

@@ -12,8 +12,13 @@ export const generateRoutes = () => {
   });
 
   return routeList.map((r) => {
-    return `${r.type.toUpperCase()} ${path.join('/', controllerTable[r.target].basePath, r.path)} ${r.target}.${
-      r.name
-    }`;
+    const result = [];
+    result.push(r.type.toUpperCase());
+    result.push(path.join('/', controllerTable[r.target].basePath, r.path));
+    if (r.middlewares.length !== 0) {
+      result.push(r.middlewares.join(' '));
+    }
+    result.push(`${r.target}.${r.name}`);
+    return result.join(' ');
   });
 };

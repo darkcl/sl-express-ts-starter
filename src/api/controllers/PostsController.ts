@@ -3,7 +3,7 @@ import { Controller, Get } from '../../decorators';
 
 @Controller('posts')
 class PostsController {
-  @Get('/')
+  @Get('/', ['authMiddleware'])
   async index(req: Request, res: Response) {
     return res.send('Hello posts!!!');
   }
