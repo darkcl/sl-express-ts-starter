@@ -1,17 +1,17 @@
-export type HttpMethod = "get" | "post" | "put" | "delete" | "patch";
+import { HttpMethod } from './HttpMethod';
 
 export const routeList = [];
 
 export const controllerTable = {};
 
-export function Controller(path = ""): ClassDecorator {
+export function Controller(path = ''): ClassDecorator {
   return (target: Function) => {
     controllerTable[target.name] = { basePath: path };
   };
 }
 
-export function createMethodDecorator(method: HttpMethod = "get") {
-  return (path = "/"): MethodDecorator =>
+export function createMethodDecorator(method: HttpMethod = 'get') {
+  return (path = '/'): MethodDecorator =>
     (target: object, name: string, descriptor: any) => {
       routeList.push({
         type: method,
@@ -22,5 +22,5 @@ export function createMethodDecorator(method: HttpMethod = "get") {
     };
 }
 
-export const Get = createMethodDecorator("get");
-export const Post = createMethodDecorator("post");
+export const Get = createMethodDecorator('get');
+export const Post = createMethodDecorator('post');

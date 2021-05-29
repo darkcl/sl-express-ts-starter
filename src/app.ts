@@ -1,4 +1,4 @@
-import { App as SuperApp } from "@shopline/sl-express";
+import { App as SuperApp } from '@shopline/sl-express';
 
 class App extends SuperApp {}
 

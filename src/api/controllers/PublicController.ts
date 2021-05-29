@@ -1,16 +1,16 @@
-import { Request, Response } from "express";
-import { Controller, Get } from "../../decorators";
+import { Request, Response } from 'express';
+import { Controller, Get } from '../../decorators';
 
-@Controller("")
+@Controller('')
 class PublicController {
-  @Get("/")
+  @Get('/')
   async index(req: Request, res: Response) {
-    return res.send("Hello world!!!");
+    return res.send('Hello world!!!');
   }
 
-  @Get("/yay")
+  @Get('/yay')
   async yay(req: Request, res: Response) {
-    return res.send("YAY");
+    return res.send('YAY');
   }
 }
 
