@@ -1,6 +1,6 @@
 import { Request, Response } from 'express';
 import { Controller, Get, Inject } from '../../decorators';
-import { PostService } from '../service/PostService';
+import { PostService } from '../services';
 
 @Controller('posts')
 class PostsController {
@@ -8,7 +8,7 @@ class PostsController {
 
   @Get('/', ['authMiddleware'])
   async index(req: Request, res: Response) {
-    return res.send(this.service.getPosts());
+    return res.send(this.service.getPosts);
   }
 }
 
