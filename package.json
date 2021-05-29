@@ -10,7 +10,7 @@
     "serve": "cd dist/ && nodemon server.js"
   },
   "dependencies": {
-    "@shopline/sl-express": "^2.1.3",
+    "@shopline/sl-express": "^3.1.0",
     "reflect-metadata": "^0.1.13"
   },
   "devDependencies": {
