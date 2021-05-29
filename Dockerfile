@@ -9,7 +9,6 @@ COPY tsconfig.json tsconfig.json
 RUN yarn install --production false
 
 COPY . .
-RUN ls
 RUN yarn build
 
 FROM node:14-alpine
