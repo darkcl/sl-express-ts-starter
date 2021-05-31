@@ -11,14 +11,23 @@ export const generateRoutes = () => {
     }
   });
 
+  console.log('[Route] Loading route with decorator');
+
   return routeList.map((r) => {
     const result = [];
     result.push(r.type.toUpperCase());
-    result.push(path.join('/', controllerTable[r.target].basePath, r.path));
+
+    if (r.path.length !== 0) {
+      result.push(path.join('/', controllerTable[r.target].basePath));
+    } else {
+      result.push(path.join('/', controllerTable[r.target].basePath, r.path));
+    }
+
     if (r.middlewares.length !== 0) {
       result.push(r.middlewares.join(' '));
     }
     result.push(`${r.target}.${r.name}`);
+    console.log('Adding Route: ', result.join(' '));
     return result.join(' ');
   });
 };

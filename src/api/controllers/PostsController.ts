@@ -8,7 +8,7 @@ class PostsController {
 
   @Get('/', ['authMiddleware'])
   async index(req: Request, res: Response) {
-    return res.send(this.service.getPosts);
+    return res.send(this.service.getPosts());
   }
 }
 
