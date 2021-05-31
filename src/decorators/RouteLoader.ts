@@ -26,7 +26,7 @@ export const generateRoutes = () => {
         const config = meta.meta.routes[funcName];
         routeConfig.push(config.method.toUpperCase());
 
-        if (config.url.length === 0) {
+        if (config.url.length === 0 || config.url === '/') {
           routeConfig.push(path.join('/', meta.meta.url));
         } else {
           routeConfig.push(path.join('/', meta.meta.url, config.url));
