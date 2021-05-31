@@ -1,33 +1,47 @@
-import { routeList, controllerTable } from './RoutingDecorators';
 import * as path from 'path';
 import { readdirSync } from 'fs';
+import { getMeta } from './Meta';
 
 export const generateRoutes = () => {
-  readdirSync(path.join(__dirname, '../api/controllers')).forEach(function (file) {
+  const metas = [];
+  const files = readdirSync(path.join(__dirname, '../api/controllers'));
+  for (const file of files) {
     if (file.match(/\.js$/) !== null && file !== 'index.js') {
       var name = file.replace('.js', '');
       const Klass = require('../api/controllers/' + file);
+
       new Klass();
+      metas.push({ controller: Klass.name, meta: getMeta(Klass.name) });
     }
-  });
+  }
 
   console.log('[Route] Loading route with decorator');
 
-  return routeList.map((r) => {
+  try {
     const result = [];
-    result.push(r.type.toUpperCase());
 
-    if (r.path.length !== 0) {
-      result.push(path.join('/', controllerTable[r.target].basePath));
-    } else {
-      result.push(path.join('/', controllerTable[r.target].basePath, r.path));
+    for (const meta of metas) {
+      for (const funcName of Object.keys(meta.meta.routes)) {
+        const routeConfig = [];
+        const config = meta.meta.routes[funcName];
+        routeConfig.push(config.method.toUpperCase());
+
+        if (config.url.length === 0) {
+          routeConfig.push(path.join('/', meta.meta.url));
+        } else {
+          routeConfig.push(path.join('/', meta.meta.url, config.url));
+        }
+
+        routeConfig.push(config.middlewares.join(' '));
+        routeConfig.push(`${meta.controller}.${funcName}`);
+
+        console.log('Adding route: ', routeConfig.join(' '));
+        result.push(routeConfig.join(' '));
+      }
     }
 
-    if (r.middlewares.length !== 0) {
-      result.push(r.middlewares.join(' '));
-    }
-    result.push(`${r.target}.${r.name}`);
-    console.log('Adding Route: ', result.join(' '));
-    return result.join(' ');
-  });
+    return result;
+  } catch (error) {
+    console.error(error);
+  }
 };

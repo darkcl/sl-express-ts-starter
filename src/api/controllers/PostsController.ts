@@ -1,14 +1,20 @@
-import { Request, Response } from 'express';
 import { Controller, Get, Inject } from '@/decorators';
 import { PostService } from '@/api/services';
+import { Params, Req, Res } from '@/decorators/ParamsDecorators';
+import { Response } from 'express';
 
 @Controller('posts')
 class PostsController {
   @Inject() private service: PostService;
 
   @Get('/', ['authMiddleware'])
-  async index(req: Request, res: Response) {
+  async index(@Res() res: Response) {
     return res.send(this.service.getPosts());
+  }
+
+  @Get('/:id', ['authMiddleware'])
+  async getPost(@Params('id') id: string, @Res() res: Response) {
+    return res.send(this.service.getPost(id));
   }
 }
 
