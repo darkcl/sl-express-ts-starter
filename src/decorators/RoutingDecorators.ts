@@ -1,4 +1,4 @@
-import { Request, Response } from 'express';
+import { NextFunction, Request, Response } from 'express';
 import { HttpMethod } from './HttpMethod';
 import { getMeta, ParameterType } from './Meta';
 
@@ -12,7 +12,7 @@ export const Controller = (path = '') => {
 const createMethodDecorator = (method: HttpMethod = 'get') => {
   return (path = '/', middlewares: string[] = []): MethodDecorator =>
     (target: object, name: string, descriptor: any) => {
-      target.constructor.prototype[`__deco_${name}`] = (req: Request, res: Response) => {
+      target.constructor.prototype[`__deco_${name}`] = (req: Request, res: Response, next: NextFunction) => {
         const { params } = getMeta(target.constructor.name);
 
         const args = params[name]
@@ -33,7 +33,17 @@ const createMethodDecorator = (method: HttpMethod = 'get') => {
                   case ParameterType.RESPONSE:
                     return res;
                   case ParameterType.PARAMS:
-                    return req.params[v.name];
+                    return v.name ? req.params : req.params[v.name];
+                  case ParameterType.BODY:
+                    return v.name ? req.body[v.name] : req.body;
+                  case ParameterType.HEADERS:
+                    return v.name ? req.headers[v.name] : req.headers;
+                  case ParameterType.QUERY:
+                    return v.name ? req.query[v.name] : req.query;
+                  case ParameterType.COOKIES:
+                    return v.name ? req.cookies[v.name] : req.cookies;
+                  case ParameterType.NEXT:
+                    return next;
                   default:
                     return null;
                 }
