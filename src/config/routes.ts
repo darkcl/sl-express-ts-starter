@@ -3,7 +3,7 @@ import { generateRoutes } from '@/decorators';
 module.exports = {
   preMiddlewares: ['* requestLog requestParseURLEncoded requestParseBody'],
 
-  routes: generateRoutes(),
+  routes: ['GET /old OldController.get', ...generateRoutes()],
 
   postMiddlewares: [],
 };
