@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import { HttpMethod } from './HttpMethod';
 import { getMeta, ParameterType } from './Meta';
+import { getDecoratorHandler } from './ParamsDecorators';
 
 export const Controller = (path = '') => {
   return (target: Function) => {
@@ -27,26 +28,13 @@ const createMethodDecorator = (method: HttpMethod = 'get') => {
                 return 0;
               })
               .map((v) => {
-                switch (v.type) {
-                  case ParameterType.REQUEST:
-                    return req;
-                  case ParameterType.RESPONSE:
-                    return res;
-                  case ParameterType.PARAMS:
-                    return v.name ? req.params : req.params[v.name];
-                  case ParameterType.BODY:
-                    return v.name ? req.body[v.name] : req.body;
-                  case ParameterType.HEADERS:
-                    return v.name ? req.headers[v.name] : req.headers;
-                  case ParameterType.QUERY:
-                    return v.name ? req.query[v.name] : req.query;
-                  case ParameterType.COOKIES:
-                    return v.name ? req.cookies[v.name] : req.cookies;
-                  case ParameterType.NEXT:
-                    return next;
-                  default:
-                    return null;
+                const handler = getDecoratorHandler(v.type);
+                if (!handler) {
+                  console.log('No handler', v.type);
+                  return null;
                 }
+
+                return handler({ req, res, next }, v.name);
               })
           : [];
         if (args.length === 0) {

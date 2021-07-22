@@ -11,7 +11,7 @@ export enum ParameterType {
 
 export interface ParameterConfiguration {
   index: number;
-  type: ParameterType;
+  type: string;
   name?: string;
   data?: any;
 }
